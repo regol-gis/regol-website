@@ -1,6 +1,6 @@
 # regol-website
 
-Static homepage for [regol](https://regol.org) — an independent, pure-Rust GeoDesk GOL 2.0 reader, spatial query engine, and OpenStreetMap PBF compiler.
+Static homepage for [regol](https://regol.org) ([source repository](https://github.com/regol-gis/regol)) — an independent, pure-Rust GeoDesk GOL 2.0 reader, spatial query engine, and OpenStreetMap PBF compiler.
 
 ## Structure
 
