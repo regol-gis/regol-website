@@ -41,15 +41,14 @@
   <header class="site-header">
     <div class="container header-inner">
       <a class="brand" href="#top" aria-label="regol home">
-        <img class="brand-wordmark brand-wordmark-light" src="assets/regol-wordmark-light.png" alt="regol" width="133" height="40">
-        <img class="brand-wordmark brand-wordmark-dark" src="assets/regol-wordmark-dark.png" alt="regol" width="133" height="40">
+        <img class="brand-wordmark brand-wordmark-light" src="assets/regol-wordmark-light.png" alt="regol" width="199" height="60">
+        <img class="brand-wordmark brand-wordmark-dark" src="assets/regol-wordmark-dark.png" alt="regol" width="199" height="60">
       </a>
 
       <div class="header-controls">
         <nav id="site-nav" class="site-nav" aria-label="Primary">
           <a href="#features">Features</a>
           <a href="#cli">CLI</a>
-          <a href="#storage">Storage</a>
           <a href="#quickstart">Quick Start</a>
           <a href="https://docs.rs/regol" rel="noopener">Docs</a>
         </nav>
@@ -85,7 +84,6 @@
     <section class="hero" id="top">
       <div class="container hero-grid">
         <div class="hero-copy">
-          <p class="kicker">Pure Rust · GeoDesk GOL 2.0 · Apache-2.0</p>
           <h1>Fast, single-file OpenStreetMap queries in Rust</h1>
           <p class="lead">
             <strong>regol</strong> is an independent, pure-Rust GeoDesk GOL 2.0 reader, spatial query engine, and OSM PBF compiler—built for country- and continent-scale lookups with no C, SQLite, or native GeoDesk dependencies.
@@ -95,7 +93,7 @@
             <a class="btn btn-secondary" href="https://docs.rs/regol" rel="noopener">API reference</a>
             <a class="btn btn-ghost" href="https://crates.io/crates/regol" rel="noopener">crates.io</a>
           </div>
-          <p class="meta-note">Rust 1.85+ · Safe by default (<code>#![forbid(unsafe_code)]</code> without <code>mmap</code>)</p>
+          <p class="meta-note">Apache-2.0 · Rust 1.85+ · <code>#![forbid(unsafe_code)]</code> without <code>mmap</code></p>
         </div>
 
         <div class="code-card" data-code-tabs>
@@ -157,7 +155,7 @@
         </article>
         <article class="pillar">
           <h2>CLI &amp; embeddable crate</h2>
-          <p>Ship <code>regol</code> inside Rust services or run <code>regol-cli</code> to build, inspect, verify CRC32C checksums, query, and export GIS and OSM formats.</p>
+          <p>Embed <code>regol</code> inside Rust applications or use <code>regol-cli</code> to build, inspect, verify CRC32C checksums, query, and export GIS and OSM formats.</p>
         </article>
         <article class="pillar">
           <h2>Disk, RAM, or S3</h2>
@@ -172,8 +170,7 @@
       <section class="feature-section">
         <div class="container split">
           <div class="split-copy">
-            <p class="eyebrow">Pure-Rust PBF Compiler</p>
-            <h2>Build and tune GOL 2.0 files directly from OSM PBF</h2>
+            <h2>Pure-Rust PBF compiler</h2>
             <p>
               <code>regol build</code> compiles raw or zlib-compressed <code>.osm.pbf</code> snapshots in parallel in memory and atomically publishes the finished <code>.gol</code> file—ready for local queries or remote range-read serving.
             </p>
@@ -249,8 +246,7 @@
       <section class="feature-section feature-section-alt">
         <div class="container split split-reverse">
           <div class="split-copy">
-            <p class="eyebrow">GOQL &amp; Spatial Engine</p>
-            <h2>Expressive queries, full OSM topology, and SI units</h2>
+            <h2>GOQL &amp; spatial engine</h2>
             <p>
               Prepare a GeoDesk Query Language (GOQL) selector once to resolve tag dictionary codes and category bitmasks, then reuse it across bounding boxes, spatial filters, parallel counts, and zero-allocation streaming scans.
             </p>
@@ -261,65 +257,57 @@
             </ul>
           </div>
 
-          <figure class="split-visual visual-card" aria-label="Diagram illustrating tile pruning, R-tree bounds, and exact polygon filtering">
-            <svg class="diagram" viewBox="0 0 520 310" role="img" aria-labelledby="diag-query-title">
-              <title id="diag-query-title">Tile grid with R-tree bounding box pruning and exact polygon query filtering</title>
-              <!-- Subtle tile grid -->
-              <g class="d-grid">
-                <rect x="24" y="24" width="118" height="87"/>
-                <rect x="142" y="24" width="118" height="87"/>
-                <rect x="260" y="24" width="118" height="87"/>
-                <rect x="378" y="24" width="118" height="87"/>
-                <rect x="24" y="111" width="118" height="87"/>
-                <rect x="142" y="111" width="118" height="87"/>
-                <rect x="260" y="111" width="118" height="87"/>
-                <rect x="378" y="111" width="118" height="87"/>
-                <rect x="24" y="198" width="118" height="87"/>
-                <rect x="142" y="198" width="118" height="87"/>
-                <rect x="260" y="198" width="118" height="87"/>
-                <rect x="378" y="198" width="118" height="87"/>
-              </g>
+          <figure class="split-visual visual-card" aria-label="Diagram showing how regol prunes tiles, R-tree branches, tags, and exact geometry">
+            <svg class="diagram" viewBox="0 0 520 318" role="img" aria-labelledby="diag-query-title">
+              <title id="diag-query-title">Four-stage GOL query execution pipeline from GOQL preparation to exact geometry matches</title>
 
-              <!-- Active tiles touched by query -->
-              <rect x="142" y="24" width="236" height="174" class="d-tile-hit"/>
-              <text x="42" y="45" class="d-tiny-muted">skipped tile</text>
-              <text x="154" y="45" class="d-label-accent">read tiles (2×2)</text>
+              <!-- Stage 1 -->
+              <rect x="20" y="18" width="480" height="54" rx="9" class="d-surface d-stroke-accent"/>
+              <rect x="32" y="31" width="28" height="28" rx="6" class="d-accent"/>
+              <text x="46" y="50" text-anchor="middle" class="d-on-accent">1</text>
+              <text x="74" y="42" class="d-title">Prepare GOQL selector</text>
+              <text x="74" y="60" class="d-muted">Resolve tag codes &amp; category mask once</text>
+              <rect x="352" y="31" width="136" height="28" rx="6" class="d-accent-soft"/>
+              <text x="420" y="49" text-anchor="middle" class="d-mono-xs">na[amenity=cafe]</text>
 
-              <!-- Stylized road network (ways) -->
-              <path d="M40 230 Q140 190 230 140 T470 72" class="d-road-dim" fill="none"/>
-              <path d="M72 52 Q168 118 272 178 T442 262" class="d-road-dim" fill="none"/>
-              <path d="M168 258 L250 112 L348 48" class="d-road-dim" fill="none"/>
+              <!-- Connector 1->2 -->
+              <path d="M260 72v18" class="d-arrow"/>
+              <polygon points="260,94 255,86 265,86" class="d-arrow-head"/>
 
-              <!-- R-tree query bbox -->
-              <rect x="158" y="56" width="204" height="132" rx="4" class="d-bbox"/>
+              <!-- Stage 2 -->
+              <rect x="20" y="96" width="480" height="54" rx="9" class="d-surface d-stroke"/>
+              <rect x="32" y="109" width="28" height="28" rx="6" class="d-block"/>
+              <text x="46" y="128" text-anchor="middle" class="d-title">2</text>
+              <text x="74" y="120" class="d-title">Tile index pruning</text>
+              <text x="74" y="138" class="d-muted">Read only tiles overlapping query bounds</text>
+              <rect x="352" y="109" width="136" height="28" rx="6" class="d-block"/>
+              <text x="420" y="127" text-anchor="middle" class="d-mono">bbox → tiles</text>
 
-              <!-- Query polygon footprint -->
-              <polygon points="186,80 318,66 346,136 278,176 172,156" class="d-poly"/>
+              <!-- Connector 2->3 -->
+              <path d="M260 150v18" class="d-arrow"/>
+              <polygon points="260,172 255,164 265,164" class="d-arrow-head"/>
 
-              <!-- Highlighted matching road segment inside polygon -->
-              <path d="M182 162 Q210 151 230 140 T336 105" class="d-road-hit" fill="none"/>
+              <!-- Stage 3 -->
+              <rect x="20" y="174" width="480" height="54" rx="9" class="d-surface d-stroke"/>
+              <rect x="32" y="187" width="28" height="28" rx="6" class="d-block"/>
+              <text x="46" y="206" text-anchor="middle" class="d-title">3</text>
+              <text x="74" y="198" class="d-title">Per-tile R-tree &amp; tag scan</text>
+              <text x="74" y="216" class="d-muted">Skip non-matching categories &amp; branches</text>
+              <rect x="352" y="187" width="136" height="28" rx="6" class="d-block-gold"/>
+              <text x="420" y="205" text-anchor="middle" class="d-label-gold">category + bbox</text>
 
-              <!-- Unmatched points outside -->
-              <circle cx="88" cy="146" r="5" class="d-pt-dim"/>
-              <circle cx="430" cy="148" r="5" class="d-pt-dim"/>
-              <circle cx="168" cy="176" r="5" class="d-pt-dim"/>
-              <circle cx="348" cy="70" r="5" class="d-pt-dim"/>
+              <!-- Connector 3->4 -->
+              <path d="M260 228v18" class="d-arrow"/>
+              <polygon points="260,250 255,242 265,242" class="d-arrow-head"/>
 
-              <!-- Matched features inside polygon -->
-              <circle cx="218" cy="116" r="6.5" class="d-pt-hit"/>
-              <circle cx="268" cy="102" r="6.5" class="d-pt-hit"/>
-              <circle cx="294" cy="140" r="6.5" class="d-pt-hit"/>
-              <circle cx="236" cy="148" r="6.5" class="d-pt-hit"/>
-
-              <!-- Legend strip -->
-              <rect x="24" y="248" width="472" height="38" rx="8" class="d-surface d-stroke-thin"/>
-              <rect x="38" y="261" width="12" height="12" rx="2" class="d-bbox-swatch"/>
-              <text x="56" y="271" class="d-tiny">R-tree bbox</text>
-              <polygon points="138,261 150,261 152,273 136,273" class="d-poly-swatch"/>
-              <text x="160" y="271" class="d-tiny">Polygon</text>
-              <circle cx="228" cy="267" r="5" class="d-pt-hit"/>
-              <text x="240" y="271" class="d-tiny">Matches</text>
-              <text x="482" y="271" text-anchor="end" class="d-mono-xs">na[amenity=cafe]</text>
+              <!-- Stage 4 -->
+              <rect x="20" y="252" width="480" height="50" rx="9" class="d-accent-soft d-stroke-accent-thin"/>
+              <rect x="32" y="263" width="28" height="28" rx="6" class="d-accent"/>
+              <text x="46" y="282" text-anchor="middle" class="d-on-accent">4</text>
+              <text x="74" y="275" class="d-title">Exact predicate &amp; results</text>
+              <text x="74" y="292" class="d-muted">Exact geometry, relations, or SI units</text>
+              <rect x="352" y="263" width="136" height="28" rx="6" class="d-surface d-stroke-thin"/>
+              <text x="420" y="281" text-anchor="middle" class="d-mono">Feature / count</text>
             </svg>
           </figure>
         </div>
@@ -329,23 +317,12 @@
       <section class="feature-section" id="cli">
         <div class="container split">
           <div class="split-copy">
-            <p class="eyebrow">Command-Line Tool</p>
-            <h2>Inspect, verify, and export from a single binary</h2>
+            <h2>Command-line tool</h2>
             <p>
               <code>regol-cli</code> bundles <code>build</code>, <code>info</code>, <code>check</code>, and <code>query</code> into one standalone binary. Queries memory-map immutable files, load the string dictionary on demand, and encode large exports in parallel while preserving query order.
             </p>
-            <div class="format-pills" aria-label="Supported export formats">
-              <span>count</span>
-              <span>ids</span>
-              <span>geojson</span>
-              <span>geojsonl</span>
-              <span>wkt</span>
-              <span>csv</span>
-              <span>xml</span>
-              <span>pbf</span>
-            </div>
-            <p class="small-copy">
-              Includes GeoJSON antimeridian splitting, polar cap closure, configurable coordinate precision, custom CSV columns, and <code>--complete-relations</code> for self-contained PBF extracts.
+            <p>
+              Export matching features as <code>count</code>, <code>ids</code>, <code>geojson</code>, <code>geojsonl</code>, <code>wkt</code>, <code>csv</code>, <code>xml</code>, or <code>pbf</code>—with GeoJSON antimeridian splitting, polar cap closure, configurable coordinate precision, custom CSV columns, and <code>--complete-relations</code> for self-contained PBF extracts.
             </p>
           </div>
 
@@ -376,81 +353,20 @@
           </div>
         </div>
       </section>
-
-      <!-- 4. Pluggable Storage Backends -->
-      <section class="feature-section feature-section-alt" id="storage">
-        <div class="container">
-          <div class="section-header">
-            <p class="eyebrow">Pluggable I/O Architecture</p>
-            <h2>Choose the storage backend that fits your runtime</h2>
-            <p>
-              <code>Library&lt;S&gt;</code> is generic over <code>regol::source::Source</code>. Combine any backend with <code>DictionaryLoading::OnDemand</code> to keep cold-start latency low for serverless functions and fast ID or count scans.
-            </p>
-          </div>
-
-          <div class="table-wrap">
-            <table class="backend-table">
-              <thead>
-                <tr>
-                  <th scope="col">Backend</th>
-                  <th scope="col">Type / Constructor</th>
-                  <th scope="col">Best for</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><strong>Retained pages</strong></td>
-                  <td><code>Library::open(path)</code> (<code>PagedFile</code>)</td>
-                  <td>Default safe file access; retains touched pages for repeated reads</td>
-                </tr>
-                <tr>
-                  <td><strong>Bounded cache</strong></td>
-                  <td><code>source::CachedFile::open(path, bytes)</code></td>
-                  <td>Long-running services with a strict RAM budget</td>
-                </tr>
-                <tr>
-                  <td><strong>Read window</strong></td>
-                  <td><code>source::WindowedFile::open(path)</code></td>
-                  <td>Low-memory streaming scans</td>
-                </tr>
-                <tr>
-                  <td><strong>Direct pread</strong></td>
-                  <td><code>source::FileSource::open(path)</code></td>
-                  <td>Minimal wrapper around OS positioned reads</td>
-                </tr>
-                <tr>
-                  <td><strong>Memory-mapped</strong></td>
-                  <td><code>source::MappedFile::open(path)</code> <span class="badge">mmap</span></td>
-                  <td>Maximum warm throughput on immutable local files</td>
-                </tr>
-                <tr>
-                  <td><strong>In-memory / custom</strong></td>
-                  <td><code>&amp;[u8]</code>, <code>Vec&lt;u8&gt;</code>, or <code>impl Source</code></td>
-                  <td>Embedded fixtures, HTTP/S3 range-read caches, or custom storage layers</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
     </div>
 
     <!-- Quick Start -->
     <section class="quickstart-section" id="quickstart">
       <div class="container">
         <div class="section-header">
-          <p class="eyebrow">Quick Start</p>
-          <h2>Up and running in seconds</h2>
+          <h2>Quick start</h2>
           <p>Requires Rust 1.85 or later. Install the standalone command-line tool or add the <code>regol</code> library to your Cargo project.</p>
         </div>
 
         <div class="quickstart-grid">
           <div class="qs-card">
-            <div class="qs-card-head">
-              <h3>Install the CLI</h3>
-              <span class="badge">regol-cli</span>
-            </div>
-            <p>Provides the <code>regol</code> binary with <code>build</code>, <code>info</code>, <code>check</code>, and <code>query</code>.</p>
+            <h3>Install the CLI</h3>
+            <p>The <code>regol-cli</code> crate provides the <code>regol</code> binary with <code>build</code>, <code>info</code>, <code>check</code>, and <code>query</code>.</p>
             <div class="code-card code-card-compact">
               <div class="code-card-header">
                 <span class="code-card-title">Shell</span>
@@ -469,11 +385,8 @@ regol query region.gol <span class="tok-s">'na[amenity=cafe]'</span></code></pre
           </div>
 
           <div class="qs-card">
-            <div class="qs-card-head">
-              <h3>Embed in Rust</h3>
-              <span class="badge">regol</span>
-            </div>
-            <p>Optional features: <code>parallel</code> (default), <code>mmap</code>, <code>build</code>, and <code>way-checkpoints</code>.</p>
+            <h3>Embed in Rust</h3>
+            <p>Optional Cargo features: <code>parallel</code> (default), <code>mmap</code>, <code>build</code>, and <code>way-checkpoints</code>.</p>
             <div class="code-card code-card-compact">
               <div class="code-card-header">
                 <span class="code-card-title">Cargo.toml</span>
@@ -527,7 +440,6 @@ regol = <span class="tok-s">"0.2"</span>
           <ul class="footer-links">
             <li><a href="#features">Features</a></li>
             <li><a href="#cli">CLI</a></li>
-            <li><a href="#storage">Storage</a></li>
             <li><a href="#quickstart">Quick Start</a></li>
           </ul>
           <ul class="footer-links">
