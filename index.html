@@ -49,6 +49,7 @@
         <nav id="site-nav" class="site-nav" aria-label="Primary">
           <a href="#features">Features</a>
           <a href="#cli">CLI</a>
+          <a href="#benchmarks">Benchmarks</a>
           <a href="#quickstart">Quick Start</a>
           <a href="https://docs.rs/regol" rel="noopener">Docs</a>
         </nav>
@@ -355,6 +356,67 @@
       </section>
     </div>
 
+    <!-- Benchmarks -->
+    <section class="feature-section feature-section-alt" id="benchmarks">
+      <div class="container">
+        <div class="section-header">
+          <h2>Benchmarks</h2>
+          <p>
+            Cross-engine benchmarks comparing <code>regol</code> on regional OpenStreetMap extracts are maintained in <code>gol-bench</code>. Placeholder figures below will be replaced with reproducible runs before release.
+          </p>
+        </div>
+
+        <div class="table-wrap">
+          <table class="bench-table">
+            <thead>
+              <tr>
+                <th scope="col">Workload</th>
+                <th scope="col">regol</th>
+                <th scope="col">Reference</th>
+                <th scope="col">Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>PBF → GOL build</strong></td>
+                <td class="num"><code>TBD</code></td>
+                <td class="num"><code>TBD</code></td>
+                <td>Great Britain <code>.osm.pbf</code>, multi-threaded build</td>
+              </tr>
+              <tr>
+                <td><strong>GOL file size</strong></td>
+                <td class="num"><code>TBD</code></td>
+                <td class="num"><code>TBD</code></td>
+                <td>Default layout (16 MiB target tiles)</td>
+              </tr>
+              <tr>
+                <td><strong>Full-region tag count</strong></td>
+                <td class="num"><code>TBD</code></td>
+                <td class="num"><code>TBD</code></td>
+                <td><code>na[amenity=cafe]</code>, warm mmap, parallel count</td>
+              </tr>
+              <tr>
+                <td><strong>Bbox query &amp; GeoJSON export</strong></td>
+                <td class="num"><code>TBD</code></td>
+                <td class="num"><code>TBD</code></td>
+                <td><code>w[highway]</code>, parallel ordered encoding</td>
+              </tr>
+              <tr>
+                <td><strong>Polygon spatial filter</strong></td>
+                <td class="num"><code>TBD</code></td>
+                <td class="num"><code>TBD</code></td>
+                <td><code>a[building]</code> with <code>--area</code> GeoJSON boundary</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p class="bench-footnote">
+          Placeholder table — hardware specs, dataset snapshot dates, exact CLI flags, and median timings across runs will be published alongside the benchmark scripts.
+        </p>
+      </div>
+    </section>
+
     <!-- Quick Start -->
     <section class="quickstart-section" id="quickstart">
       <div class="container">
@@ -440,6 +502,7 @@ regol = <span class="tok-s">"0.2"</span>
           <ul class="footer-links">
             <li><a href="#features">Features</a></li>
             <li><a href="#cli">CLI</a></li>
+            <li><a href="#benchmarks">Benchmarks</a></li>
             <li><a href="#quickstart">Quick Start</a></li>
           </ul>
           <ul class="footer-links">

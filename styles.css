@@ -595,6 +595,48 @@ p:last-child { margin-bottom: 0; }
 .d-arrow { stroke: var(--border-strong); stroke-width: 2; }
 .d-arrow-head { fill: var(--border-strong); }
 
+/* Benchmarks table */
+.table-wrap {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow-x: auto;
+  box-shadow: var(--shadow-sm);
+}
+
+.bench-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.94rem;
+  min-width: 580px;
+}
+
+.bench-table th,
+.bench-table td {
+  text-align: left;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+}
+
+.bench-table th {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink-muted);
+  background: var(--surface-subtle);
+  font-weight: 700;
+}
+
+.bench-table tbody tr:last-child td { border-bottom: 0; }
+.bench-table td strong { color: var(--ink); }
+.bench-table td.num { white-space: nowrap; }
+
+.bench-footnote {
+  margin-top: 14px;
+  font-size: 0.85rem;
+  color: var(--ink-muted);
+}
+
 /* Quick Start */
 .section-header {
   max-width: 720px;
@@ -602,9 +644,7 @@ p:last-child { margin-bottom: 0; }
 }
 
 .quickstart-section {
-  background: var(--bg-alt);
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
+  background: var(--bg);
   padding: 72px 0;
 }
 
@@ -644,7 +684,8 @@ p:last-child { margin-bottom: 0; }
 
 /* Bottom CTA */
 .cta-band {
-  background: var(--bg);
+  background: var(--bg-alt);
+  border-top: 1px solid var(--border);
   padding: 64px 0;
   text-align: center;
 }
@@ -662,7 +703,7 @@ p:last-child { margin-bottom: 0; }
 .site-footer {
   border-top: 1px solid var(--border);
   padding: 44px 0 40px;
-  background: var(--bg-alt);
+  background: var(--bg);
 }
 
 .footer-top {
