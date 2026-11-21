@@ -1,0 +1,555 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#faf7f1" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0d1717" media="(prefers-color-scheme: dark)">
+
+  <title>regol — Pure-Rust GeoDesk GOL 2.0 Reader, Spatial Engine &amp; OSM PBF Builder</title>
+  <meta name="description" content="regol is an independent, pure-Rust GeoDesk GOL 2.0 reader, spatial query engine, and OpenStreetMap PBF compiler with CLI and embeddable library crates.">
+  <link rel="canonical" href="https://regol.org/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="regol">
+  <meta property="og:title" content="regol — Pure-Rust GeoDesk GOL 2.0 Engine for OpenStreetMap">
+  <meta property="og:description" content="Independent, pure-Rust GeoDesk GOL 2.0 reader, spatial query engine, and OpenStreetMap PBF compiler. Zero C or SQLite dependencies.">
+  <meta property="og:url" content="https://regol.org/">
+  <meta property="og:image" content="https://regol.org/assets/og-card.png">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem("regol-theme");
+        if (saved === "light" || saved === "dark") {
+          document.documentElement.setAttribute("data-theme", saved);
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="#top" aria-label="regol home">
+        <img class="brand-wordmark brand-wordmark-light" src="assets/regol-wordmark-light.png" alt="regol" width="133" height="40">
+        <img class="brand-wordmark brand-wordmark-dark" src="assets/regol-wordmark-dark.png" alt="regol" width="133" height="40">
+      </a>
+
+      <div class="header-controls">
+        <nav id="site-nav" class="site-nav" aria-label="Primary">
+          <a href="#features">Features</a>
+          <a href="#cli">CLI</a>
+          <a href="#storage">Storage</a>
+          <a href="#quickstart">Quick Start</a>
+          <a href="https://docs.rs/regol" rel="noopener">Docs</a>
+        </nav>
+
+        <button type="button" class="icon-btn theme-toggle" id="theme-toggle" aria-label="Switch color theme (currently automatic)" title="Color theme: System">
+          <svg class="theme-icon theme-icon-auto" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"/>
+            <path d="M12 3a9 9 0 0 0 0 18z" fill="currentColor" stroke="none"/>
+          </svg>
+          <svg class="theme-icon theme-icon-light" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="4"/>
+            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+          </svg>
+          <svg class="theme-icon theme-icon-dark" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>
+          </svg>
+        </button>
+
+        <button type="button" class="icon-btn nav-toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="site-nav">
+          <svg class="menu-icon-open" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M4 7h16M4 12h16M4 17h16"/>
+          </svg>
+          <svg class="menu-icon-close" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M6 6l12 12M18 6L6 18"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- Hero -->
+    <section class="hero" id="top">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <p class="kicker">Pure Rust · GeoDesk GOL 2.0 · Apache-2.0</p>
+          <h1>Fast, single-file OpenStreetMap queries in Rust</h1>
+          <p class="lead">
+            <strong>regol</strong> is an independent, pure-Rust GeoDesk GOL 2.0 reader, spatial query engine, and OSM PBF compiler—built for country- and continent-scale lookups with no C, SQLite, or native GeoDesk dependencies.
+          </p>
+          <div class="actions">
+            <a class="btn btn-primary" href="#quickstart">Get started</a>
+            <a class="btn btn-secondary" href="https://docs.rs/regol" rel="noopener">API reference</a>
+            <a class="btn btn-ghost" href="https://crates.io/crates/regol" rel="noopener">crates.io</a>
+          </div>
+          <p class="meta-note">Rust 1.85+ · Safe by default (<code>#![forbid(unsafe_code)]</code> without <code>mmap</code>)</p>
+        </div>
+
+        <div class="code-card" data-code-tabs>
+          <div class="code-card-header">
+            <div class="tab-list" role="tablist" aria-label="Usage examples">
+              <button type="button" class="tab-btn is-active" role="tab" id="tab-cli" aria-selected="true" aria-controls="panel-cli" data-tab="cli">CLI</button>
+              <button type="button" class="tab-btn" role="tab" id="tab-rust" aria-selected="false" aria-controls="panel-rust" data-tab="rust">Rust API</button>
+            </div>
+            <button type="button" class="copy-btn" data-copy-target="active-tab" aria-label="Copy snippet">Copy</button>
+          </div>
+
+          <div class="code-panel is-active" role="tabpanel" id="panel-cli" aria-labelledby="tab-cli" data-panel="cli">
+<pre><code><span class="tok-c"># Build a GOL 2.0 file from OpenStreetMap PBF</span>
+<span class="tok-p">$</span> regol build region.osm.pbf region.gol
+
+<span class="tok-c"># Query cafés in a GeoJSON polygon as GeoJSONL</span>
+<span class="tok-p">$</span> regol query region.gol <span class="tok-s">'na[amenity=cafe]'</span> \
+    --area district.geojson \
+    -f geojsonl &gt; cafes.geojsonl
+
+<span class="tok-c"># Export roads in a bounding box to CSV</span>
+<span class="tok-p">$</span> regol query region.gol <span class="tok-s">'w[highway]'</span> \
+    --bbox=-0.14,51.49,-0.10,51.52 \
+    -f csv --keys id,name,highway</code></pre>
+          </div>
+
+          <div class="code-panel" role="tabpanel" id="panel-rust" aria-labelledby="tab-rust" data-panel="rust" hidden>
+<pre><code><span class="tok-k">use</span> regol::{Library, Query, Result};
+
+<span class="tok-k">fn</span> <span class="tok-f">main</span>() -&gt; Result&lt;()&gt; {
+    <span class="tok-k">let</span> library = Library::open(<span class="tok-s">"region.gol"</span>)?;
+    <span class="tok-k">let</span> cafes = Query::parse(<span class="tok-s">"na[amenity=cafe]"</span>)?
+        .prepare(&amp;library)?;
+
+    println!(<span class="tok-s">"Total cafés: {}"</span>, cafes.count()?);
+    <span class="tok-k">for</span> feature <span class="tok-k">in</span> cafes.iter() {
+        <span class="tok-k">let</span> feature = feature?;
+        <span class="tok-k">if let</span> Some(name) = feature.tag(<span class="tok-s">"name"</span>)? {
+            println!(<span class="tok-s">"{}: {}"</span>, feature.id(), name);
+        }
+    }
+    Ok(())
+}</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pillars -->
+    <section class="pillars-band" aria-label="Key capabilities">
+      <div class="container pillars-grid">
+        <article class="pillar">
+          <h2>Single-file GOL 2.0</h2>
+          <p>Reorganizes <code>.osm.pbf</code> snapshots into zoom-pyramid tiles, tag categories, and Hilbert-ordered R-trees so queries read only overlapping branches.</p>
+        </article>
+        <article class="pillar">
+          <h2>100% pure Rust</h2>
+          <p>Zero C toolchains, SQLite staging databases, or external GeoDesk runtimes. Enforces <code>#![forbid(unsafe_code)]</code> when <code>mmap</code> is not enabled.</p>
+        </article>
+        <article class="pillar">
+          <h2>CLI &amp; embeddable crate</h2>
+          <p>Ship <code>regol</code> inside Rust services or run <code>regol-cli</code> to build, inspect, verify CRC32C checksums, query, and export GIS and OSM formats.</p>
+        </article>
+        <article class="pillar">
+          <h2>Disk, RAM, or S3</h2>
+          <p>Generic over positioned byte reads (<code>Source</code>): run on local disks, bounded caches, immutable memory maps, or custom HTTP/object-storage backends.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Feature Showcase -->
+    <div id="features" class="features-wrap">
+      <!-- 1. Builder -->
+      <section class="feature-section">
+        <div class="container split">
+          <div class="split-copy">
+            <p class="eyebrow">Pure-Rust PBF Compiler</p>
+            <h2>Build and tune GOL 2.0 files directly from OSM PBF</h2>
+            <p>
+              <code>regol build</code> compiles raw or zlib-compressed <code>.osm.pbf</code> snapshots in parallel in memory and atomically publishes the finished <code>.gol</code> file—ready for local queries or remote range-read serving.
+            </p>
+            <ul class="detail-list">
+              <li><strong>Presets for real workloads:</strong> <code>--preset vector-tiles</code> for S3 range reads and <code>--preset compact</code> for smaller metadata headers.</li>
+              <li><strong>Layout tuning:</strong> control tile size (<code>--target-tile-kib</code>), even zoom steps (<code>--even-zooms</code>), border duplication, and per-tile R-tree fanout.</li>
+              <li><strong>Embeddable:</strong> enable the optional <code>build</code> Cargo feature to compile GOLs straight from Rust via <code>regol::build</code>.</li>
+            </ul>
+          </div>
+
+          <figure class="split-visual visual-card" aria-label="Diagram of OSM PBF compiling into a GOL 2.0 single-file database">
+            <svg class="diagram" viewBox="0 0 520 310" role="img" aria-labelledby="diag-build-title">
+              <title id="diag-build-title">Pipeline from OSM PBF through parallel Rust builder to single-file GOL 2.0 layout</title>
+              <!-- Input box -->
+              <rect x="18" y="88" width="114" height="124" rx="10" class="d-surface d-stroke"/>
+              <rect x="18" y="88" width="114" height="28" rx="10" class="d-accent-soft"/>
+              <rect x="18" y="106" width="114" height="10" class="d-accent-soft"/>
+              <text x="75" y="107" text-anchor="middle" class="d-label-accent">INPUT</text>
+              <text x="75" y="142" text-anchor="middle" class="d-title">.osm.pbf</text>
+              <text x="75" y="164" text-anchor="middle" class="d-muted">Nodes · Ways</text>
+              <text x="75" y="182" text-anchor="middle" class="d-muted">Relations · Tags</text>
+              <text x="75" y="200" text-anchor="middle" class="d-muted">Raw / zlib</text>
+
+              <!-- Arrow 1 -->
+              <path d="M138 150h30" class="d-arrow"/>
+              <polygon points="174,150 165,145 165,155" class="d-arrow-head"/>
+
+              <!-- Builder box -->
+              <rect x="178" y="64" width="124" height="172" rx="10" class="d-surface d-stroke-accent"/>
+              <text x="240" y="92" text-anchor="middle" class="d-title">regol build</text>
+              <text x="240" y="110" text-anchor="middle" class="d-muted">Parallel in-memory</text>
+              <rect x="192" y="124" width="96" height="24" rx="5" class="d-chip"/>
+              <text x="240" y="140" text-anchor="middle" class="d-mono">String dict</text>
+              <rect x="192" y="156" width="96" height="24" rx="5" class="d-chip"/>
+              <text x="240" y="172" text-anchor="middle" class="d-mono">Tile pyramid</text>
+              <rect x="192" y="188" width="96" height="24" rx="5" class="d-chip"/>
+              <text x="240" y="204" text-anchor="middle" class="d-mono">Hilbert R-tree</text>
+              <text x="240" y="226" text-anchor="middle" class="d-label-gold">100% safe Rust</text>
+
+              <!-- Arrow 2 -->
+              <path d="M308 150h30" class="d-arrow"/>
+              <polygon points="344,150 335,145 335,155" class="d-arrow-head"/>
+
+              <!-- Output GOL file -->
+              <rect x="348" y="26" width="154" height="258" rx="12" class="d-surface d-stroke"/>
+              <rect x="348" y="26" width="154" height="32" rx="12" class="d-accent"/>
+              <rect x="348" y="46" width="154" height="12" class="d-accent"/>
+              <text x="425" y="47" text-anchor="middle" class="d-on-accent">region.gol (GOL 2.0)</text>
+
+              <rect x="362" y="70" width="126" height="34" rx="6" class="d-block-gold"/>
+              <text x="425" y="91" text-anchor="middle" class="d-mono-sm">Header + CRC32C</text>
+
+              <rect x="362" y="112" width="126" height="34" rx="6" class="d-block"/>
+              <text x="425" y="133" text-anchor="middle" class="d-mono-sm">Global Dictionary</text>
+
+              <rect x="362" y="154" width="126" height="34" rx="6" class="d-block"/>
+              <text x="425" y="175" text-anchor="middle" class="d-mono-sm">Tile Index</text>
+
+              <rect x="362" y="196" width="126" height="74" rx="6" class="d-accent-soft d-stroke-accent-thin"/>
+              <text x="425" y="217" text-anchor="middle" class="d-label-accent">Indexed Tiles</text>
+              <rect x="372" y="226" width="32" height="32" rx="4" class="d-surface d-stroke-thin"/>
+              <rect x="409" y="226" width="32" height="32" rx="4" class="d-surface d-stroke-thin"/>
+              <rect x="446" y="226" width="32" height="32" rx="4" class="d-surface d-stroke-thin"/>
+              <text x="388" y="246" text-anchor="middle" class="d-tiny">z6</text>
+              <text x="425" y="246" text-anchor="middle" class="d-tiny">z8</text>
+              <text x="462" y="246" text-anchor="middle" class="d-tiny">z10</text>
+            </svg>
+          </figure>
+        </div>
+      </section>
+
+      <!-- 2. Spatial queries & OSM model -->
+      <section class="feature-section feature-section-alt">
+        <div class="container split split-reverse">
+          <div class="split-copy">
+            <p class="eyebrow">GOQL &amp; Spatial Engine</p>
+            <h2>Expressive queries, full OSM topology, and SI units</h2>
+            <p>
+              Prepare a GeoDesk Query Language (GOQL) selector once to resolve tag dictionary codes and category bitmasks, then reuse it across bounding boxes, spatial filters, parallel counts, and zero-allocation streaming scans.
+            </p>
+            <ul class="detail-list">
+              <li><strong>Exact spatial predicates:</strong> <code>Intersects</code>, <code>Within</code>, <code>Contains</code>, <code>CoveredBy</code>, <code>Touches</code>, <code>Overlaps</code>, <code>Crosses</code>, <code>Disjoint</code>, and <code>WithinDistance</code>.</li>
+              <li><strong>Full OSM relationships:</strong> combine <code>FeatureSet</code>s with <code>and</code>, <code>or</code>, <code>without</code>, and traverse <code>member_set</code>, <code>parent_set</code>, and <code>connected_to</code>.</li>
+              <li><strong>Typed spherical measurements:</strong> lengths, perimeters, distances, and areas returned as type-safe <code>uom</code> SI quantities.</li>
+            </ul>
+          </div>
+
+          <figure class="split-visual visual-card" aria-label="Diagram illustrating tile pruning, R-tree bounds, and exact polygon filtering">
+            <svg class="diagram" viewBox="0 0 520 310" role="img" aria-labelledby="diag-query-title">
+              <title id="diag-query-title">Tile grid with R-tree bounding box pruning and exact polygon query filtering</title>
+              <!-- Subtle tile grid -->
+              <g class="d-grid">
+                <rect x="24" y="24" width="118" height="87"/>
+                <rect x="142" y="24" width="118" height="87"/>
+                <rect x="260" y="24" width="118" height="87"/>
+                <rect x="378" y="24" width="118" height="87"/>
+                <rect x="24" y="111" width="118" height="87"/>
+                <rect x="142" y="111" width="118" height="87"/>
+                <rect x="260" y="111" width="118" height="87"/>
+                <rect x="378" y="111" width="118" height="87"/>
+                <rect x="24" y="198" width="118" height="87"/>
+                <rect x="142" y="198" width="118" height="87"/>
+                <rect x="260" y="198" width="118" height="87"/>
+                <rect x="378" y="198" width="118" height="87"/>
+              </g>
+
+              <!-- Active tiles touched by query -->
+              <rect x="142" y="24" width="236" height="174" class="d-tile-hit"/>
+              <text x="42" y="45" class="d-tiny-muted">skipped tile</text>
+              <text x="154" y="45" class="d-label-accent">read tiles (2×2)</text>
+
+              <!-- Stylized road network (ways) -->
+              <path d="M40 230 Q140 190 230 140 T470 72" class="d-road-dim" fill="none"/>
+              <path d="M72 52 Q168 118 272 178 T442 262" class="d-road-dim" fill="none"/>
+              <path d="M168 258 L250 112 L348 48" class="d-road-dim" fill="none"/>
+
+              <!-- R-tree query bbox -->
+              <rect x="158" y="56" width="204" height="132" rx="4" class="d-bbox"/>
+
+              <!-- Query polygon footprint -->
+              <polygon points="186,80 318,66 346,136 278,176 172,156" class="d-poly"/>
+
+              <!-- Highlighted matching road segment inside polygon -->
+              <path d="M182 162 Q210 151 230 140 T336 105" class="d-road-hit" fill="none"/>
+
+              <!-- Unmatched points outside -->
+              <circle cx="88" cy="146" r="5" class="d-pt-dim"/>
+              <circle cx="430" cy="148" r="5" class="d-pt-dim"/>
+              <circle cx="168" cy="176" r="5" class="d-pt-dim"/>
+              <circle cx="348" cy="70" r="5" class="d-pt-dim"/>
+
+              <!-- Matched features inside polygon -->
+              <circle cx="218" cy="116" r="6.5" class="d-pt-hit"/>
+              <circle cx="268" cy="102" r="6.5" class="d-pt-hit"/>
+              <circle cx="294" cy="140" r="6.5" class="d-pt-hit"/>
+              <circle cx="236" cy="148" r="6.5" class="d-pt-hit"/>
+
+              <!-- Legend strip -->
+              <rect x="24" y="248" width="472" height="38" rx="8" class="d-surface d-stroke-thin"/>
+              <rect x="38" y="261" width="12" height="12" rx="2" class="d-bbox-swatch"/>
+              <text x="56" y="271" class="d-tiny">R-tree bbox</text>
+              <polygon points="138,261 150,261 152,273 136,273" class="d-poly-swatch"/>
+              <text x="160" y="271" class="d-tiny">Polygon</text>
+              <circle cx="228" cy="267" r="5" class="d-pt-hit"/>
+              <text x="240" y="271" class="d-tiny">Matches</text>
+              <text x="482" y="271" text-anchor="end" class="d-mono-xs">na[amenity=cafe]</text>
+            </svg>
+          </figure>
+        </div>
+      </section>
+
+      <!-- 3. CLI & Export -->
+      <section class="feature-section" id="cli">
+        <div class="container split">
+          <div class="split-copy">
+            <p class="eyebrow">Command-Line Tool</p>
+            <h2>Inspect, verify, and export from a single binary</h2>
+            <p>
+              <code>regol-cli</code> bundles <code>build</code>, <code>info</code>, <code>check</code>, and <code>query</code> into one standalone binary. Queries memory-map immutable files, load the string dictionary on demand, and encode large exports in parallel while preserving query order.
+            </p>
+            <div class="format-pills" aria-label="Supported export formats">
+              <span>count</span>
+              <span>ids</span>
+              <span>geojson</span>
+              <span>geojsonl</span>
+              <span>wkt</span>
+              <span>csv</span>
+              <span>xml</span>
+              <span>pbf</span>
+            </div>
+            <p class="small-copy">
+              Includes GeoJSON antimeridian splitting, polar cap closure, configurable coordinate precision, custom CSV columns, and <code>--complete-relations</code> for self-contained PBF extracts.
+            </p>
+          </div>
+
+          <div class="split-visual">
+            <div class="code-card">
+              <div class="code-card-header">
+                <span class="code-card-title">regol CLI workflow</span>
+                <button type="button" class="copy-btn" data-copy-target="cli-workflow" aria-label="Copy CLI commands">Copy</button>
+              </div>
+              <div class="code-panel is-active" id="cli-workflow">
+<pre><code><span class="tok-c"># Inspect metadata, indexed keys, and tile counts</span>
+<span class="tok-p">$</span> regol info region.gol
+
+<span class="tok-c"># Verify CRC32C checksums, R-tree bounds, and links</span>
+<span class="tok-p">$</span> regol check region.gol
+
+<span class="tok-c"># Extract a PBF slice for a bounding box</span>
+<span class="tok-p">$</span> regol query region.gol <span class="tok-s">'w[highway]'</span> \
+    --bbox=-0.14,51.49,-0.10,51.52 \
+    -f pbf &gt; roads.osm.pbf
+
+<span class="tok-c"># Export building areas inside a GeoJSON polygon</span>
+<span class="tok-p">$</span> regol query region.gol <span class="tok-s">'a[building]'</span> \
+    --area boundary.geojson \
+    -f geojson &gt; buildings.geojson</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. Pluggable Storage Backends -->
+      <section class="feature-section feature-section-alt" id="storage">
+        <div class="container">
+          <div class="section-header">
+            <p class="eyebrow">Pluggable I/O Architecture</p>
+            <h2>Choose the storage backend that fits your runtime</h2>
+            <p>
+              <code>Library&lt;S&gt;</code> is generic over <code>regol::source::Source</code>. Combine any backend with <code>DictionaryLoading::OnDemand</code> to keep cold-start latency low for serverless functions and fast ID or count scans.
+            </p>
+          </div>
+
+          <div class="table-wrap">
+            <table class="backend-table">
+              <thead>
+                <tr>
+                  <th scope="col">Backend</th>
+                  <th scope="col">Type / Constructor</th>
+                  <th scope="col">Best for</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Retained pages</strong></td>
+                  <td><code>Library::open(path)</code> (<code>PagedFile</code>)</td>
+                  <td>Default safe file access; retains touched pages for repeated reads</td>
+                </tr>
+                <tr>
+                  <td><strong>Bounded cache</strong></td>
+                  <td><code>source::CachedFile::open(path, bytes)</code></td>
+                  <td>Long-running services with a strict RAM budget</td>
+                </tr>
+                <tr>
+                  <td><strong>Read window</strong></td>
+                  <td><code>source::WindowedFile::open(path)</code></td>
+                  <td>Low-memory streaming scans</td>
+                </tr>
+                <tr>
+                  <td><strong>Direct pread</strong></td>
+                  <td><code>source::FileSource::open(path)</code></td>
+                  <td>Minimal wrapper around OS positioned reads</td>
+                </tr>
+                <tr>
+                  <td><strong>Memory-mapped</strong></td>
+                  <td><code>source::MappedFile::open(path)</code> <span class="badge">mmap</span></td>
+                  <td>Maximum warm throughput on immutable local files</td>
+                </tr>
+                <tr>
+                  <td><strong>In-memory / custom</strong></td>
+                  <td><code>&amp;[u8]</code>, <code>Vec&lt;u8&gt;</code>, or <code>impl Source</code></td>
+                  <td>Embedded fixtures, HTTP/S3 range-read caches, or custom storage layers</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Quick Start -->
+    <section class="quickstart-section" id="quickstart">
+      <div class="container">
+        <div class="section-header">
+          <p class="eyebrow">Quick Start</p>
+          <h2>Up and running in seconds</h2>
+          <p>Requires Rust 1.85 or later. Install the standalone command-line tool or add the <code>regol</code> library to your Cargo project.</p>
+        </div>
+
+        <div class="quickstart-grid">
+          <div class="qs-card">
+            <div class="qs-card-head">
+              <h3>Install the CLI</h3>
+              <span class="badge">regol-cli</span>
+            </div>
+            <p>Provides the <code>regol</code> binary with <code>build</code>, <code>info</code>, <code>check</code>, and <code>query</code>.</p>
+            <div class="code-card code-card-compact">
+              <div class="code-card-header">
+                <span class="code-card-title">Shell</span>
+                <button type="button" class="copy-btn" data-copy-target="qs-cli-code" aria-label="Copy CLI install commands">Copy</button>
+              </div>
+              <div class="code-panel is-active" id="qs-cli-code">
+<pre><code>cargo install --locked regol-cli
+
+regol build region.osm.pbf region.gol
+regol query region.gol <span class="tok-s">'na[amenity=cafe]'</span></code></pre>
+              </div>
+            </div>
+            <p class="qs-foot">
+              <a href="https://crates.io/crates/regol-cli" rel="noopener">View regol-cli on crates.io →</a>
+            </p>
+          </div>
+
+          <div class="qs-card">
+            <div class="qs-card-head">
+              <h3>Embed in Rust</h3>
+              <span class="badge">regol</span>
+            </div>
+            <p>Optional features: <code>parallel</code> (default), <code>mmap</code>, <code>build</code>, and <code>way-checkpoints</code>.</p>
+            <div class="code-card code-card-compact">
+              <div class="code-card-header">
+                <span class="code-card-title">Cargo.toml</span>
+                <button type="button" class="copy-btn" data-copy-target="qs-rust-code" aria-label="Copy Cargo.toml snippet">Copy</button>
+              </div>
+              <div class="code-panel is-active" id="qs-rust-code">
+<pre><code><span class="tok-k">[dependencies]</span>
+regol = <span class="tok-s">"0.2"</span>
+
+<span class="tok-c"># Optional PBF builder &amp; mmap features:</span>
+<span class="tok-c"># regol = { version = "0.2",</span>
+<span class="tok-c">#   features = ["mmap", "build"] }</span></code></pre>
+              </div>
+            </div>
+            <p class="qs-foot">
+              <a href="https://docs.rs/regol" rel="noopener">Read library documentation on docs.rs →</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Open Source CTA -->
+    <section class="cta-band">
+      <div class="container cta-inner">
+        <h2>Free and open-source software</h2>
+        <p>
+          regol is licensed under the Apache License, Version 2.0. Explore the full API documentation, cargo feature matrix, and GOL 2.0 format compatibility notes.
+        </p>
+        <div class="actions actions-center">
+          <a class="btn btn-primary" href="https://docs.rs/regol" rel="noopener">Documentation</a>
+          <a class="btn btn-secondary" href="https://crates.io/crates/regol" rel="noopener">regol crate</a>
+          <a class="btn btn-secondary" href="https://crates.io/crates/regol-cli" rel="noopener">regol-cli crate</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <img src="assets/regol-mark.png" alt="" width="40" height="40" aria-hidden="true">
+          <div>
+            <strong>regol</strong>
+            <p>Independent pure-Rust GeoDesk GOL 2.0 engine &amp; OSM PBF compiler.</p>
+          </div>
+        </div>
+
+        <div class="footer-links-group">
+          <ul class="footer-links">
+            <li><a href="#features">Features</a></li>
+            <li><a href="#cli">CLI</a></li>
+            <li><a href="#storage">Storage</a></li>
+            <li><a href="#quickstart">Quick Start</a></li>
+          </ul>
+          <ul class="footer-links">
+            <li><a href="https://docs.rs/regol" rel="noopener">docs.rs/regol</a></li>
+            <li><a href="https://crates.io/crates/regol" rel="noopener">crates.io/crates/regol</a></li>
+            <li><a href="https://crates.io/crates/regol-cli" rel="noopener">crates.io/crates/regol-cli</a></li>
+            <li><a href="https://www.apache.org/licenses/LICENSE-2.0" rel="noopener">Apache-2.0 License</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-legal">
+        <p>
+          OpenStreetMap<sup>&reg;</sup> is a trademark of the OpenStreetMap Foundation. regol is not endorsed by or affiliated with the OpenStreetMap Foundation.
+        </p>
+        <p>
+          regol is an independent Rust implementation compatible with the GeoDesk GOL 2.0 file format, and is not affiliated with or endorsed by Clarisma or the GeoDesk project.
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="main.js" defer></script>
+</body>
+</html>
