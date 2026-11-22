@@ -363,7 +363,7 @@
         <div class="section-header">
           <h2>Benchmarks</h2>
           <p>
-            Cross-engine benchmarks comparing <code>regol</code> on regional OpenStreetMap extracts are maintained in <code>gol-bench</code>. Placeholder figures below will be replaced with reproducible runs before release.
+            Verified cross-engine benchmarks run continuously on bare-metal Linux against public Geofabrik OpenStreetMap extracts. Explore interactive history and full per-workload results at <a href="https://bench.regol.org">bench.regol.org</a>.
           </p>
         </div>
 
@@ -372,48 +372,48 @@
             <thead>
               <tr>
                 <th scope="col">Workload</th>
-                <th scope="col">regol</th>
+                <th scope="col">regol 0.2.0</th>
                 <th scope="col">Reference</th>
                 <th scope="col">Notes</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td><strong>PBF → GOL build</strong></td>
-                <td class="num"><code>TBD</code></td>
-                <td class="num"><code>TBD</code></td>
-                <td>Great Britain <code>.osm.pbf</code>, multi-threaded build</td>
+                <td><strong>PBF → GOL build (Ghana)</strong></td>
+                <td class="num"><code>4.06 s</code></td>
+                <td class="num"><code>7.11 s</code></td>
+                <td>4 CPUs · 915 vs 1,533 MiB RSS · GOL Tool 2.0.0</td>
               </tr>
               <tr>
-                <td><strong>GOL file size</strong></td>
-                <td class="num"><code>TBD</code></td>
-                <td class="num"><code>TBD</code></td>
-                <td>Default layout (16 MiB target tiles)</td>
+                <td><strong>PBF → GOL build (Bremen)</strong></td>
+                <td class="num"><code>831 ms</code></td>
+                <td class="num"><code>2.82 s</code></td>
+                <td>4 CPUs · 224 vs 1,120 MiB RSS · GOL Tool 2.0.0</td>
               </tr>
               <tr>
-                <td><strong>Full-region tag count</strong></td>
-                <td class="num"><code>TBD</code></td>
-                <td class="num"><code>TBD</code></td>
-                <td><code>na[amenity=cafe]</code>, warm mmap, parallel count</td>
+                <td><strong>CLI road count (Leeds, UK)</strong></td>
+                <td class="num"><code>2.94 ms</code></td>
+                <td class="num"><code>5.09 ms</code></td>
+                <td>11,189 ways on 3.63 GiB UK GOL · 2 CPUs · GOL Tool 2.0.0</td>
               </tr>
               <tr>
-                <td><strong>Bbox query &amp; GeoJSON export</strong></td>
-                <td class="num"><code>TBD</code></td>
-                <td class="num"><code>TBD</code></td>
-                <td><code>w[highway]</code>, parallel ordered encoding</td>
+                <td><strong>CLI GeoJSONL export (Leeds, UK)</strong></td>
+                <td class="num"><code>14.56 ms</code></td>
+                <td class="num"><code>17.68 ms</code></td>
+                <td>11,189 ways on 3.63 GiB UK GOL · 2 CPUs · GOL Tool 2.0.0</td>
               </tr>
               <tr>
-                <td><strong>Polygon spatial filter</strong></td>
-                <td class="num"><code>TBD</code></td>
-                <td class="num"><code>TBD</code></td>
-                <td><code>a[building]</code> with <code>--area</code> GeoJSON boundary</td>
+                <td><strong>UK application workflows (10 apps)</strong></td>
+                <td class="num"><code>0.45–127 ms</code></td>
+                <td class="num"><code>1.09–649 ms</code></td>
+                <td>1 CPU · 2.1×–5.5× faster than GeoDesk Python 2.3.1</td>
               </tr>
             </tbody>
           </table>
         </div>
 
         <p class="bench-footnote">
-          Placeholder table — hardware specs, dataset snapshot dates, exact CLI flags, and median timings across runs will be published alongside the benchmark scripts.
+          Measured on Intel Xeon E3-1245 V2 (4C/8T, 31 GiB RAM, Debian Linux, <code>rustc 1.100.0</code>). Full methodology, datasets, and commit history at <a href="https://bench.regol.org">bench.regol.org</a> · <a href="https://github.com/regol-gis/gol-bench" rel="noopener">gol-bench</a>.
         </p>
       </div>
     </section>
@@ -504,7 +504,7 @@ regol = <span class="tok-s">"0.2"</span>
           <ul class="footer-links">
             <li><a href="#features">Features</a></li>
             <li><a href="#cli">CLI</a></li>
-            <li><a href="#benchmarks">Benchmarks</a></li>
+            <li><a href="https://bench.regol.org">Benchmarks</a></li>
             <li><a href="#quickstart">Quick Start</a></li>
           </ul>
           <ul class="footer-links">
