@@ -363,7 +363,7 @@
         <div class="section-header">
           <h2>Benchmarks</h2>
           <p>
-            Verified cross-engine benchmarks run continuously on bare-metal Linux against public Geofabrik OpenStreetMap extracts. Explore interactive history and full per-workload results at <a href="https://bench.regol.org">bench.regol.org</a>.
+            Verified cross-engine benchmarks run continuously on bare-metal Linux against public Geofabrik OpenStreetMap extracts. Speedups show <code>regol 0.2.0</code> geometric-mean averages over GOL Tool / GeoDesk Python across all five suites at <a href="https://bench.regol.org">bench.regol.org</a>.
           </p>
         </div>
 
@@ -371,50 +371,92 @@
           <table class="bench-table">
             <thead>
               <tr>
-                <th scope="col">Workload</th>
-                <th scope="col">regol 0.2.0</th>
-                <th scope="col">Reference</th>
-                <th scope="col">Notes</th>
+                <th scope="col">Benchmark suite</th>
+                <th scope="col">Average speedup</th>
+                <th scope="col">Representative workload</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td><strong>PBF → GOL build (Ghana)</strong></td>
-                <td class="num"><code>4.06 s</code></td>
-                <td class="num"><code>7.11 s</code></td>
-                <td>4 CPUs · 915 vs 1,533 MiB RSS · GOL Tool 2.0.0</td>
+                <td>
+                  <strong><a href="https://bench.regol.org/?suite=writers#latest">Writers</a></strong>
+                  <span class="bench-sub">PBF → GOL builds (Monaco, Bremen, Ghana · 1 &amp; 4 CPUs)</span>
+                </td>
+                <td class="num">
+                  <span class="bench-speedup">4.15× faster</span>
+                  <span class="bench-sub">vs GOL Tool 2.0.0</span>
+                </td>
+                <td>
+                  <strong>Bremen 4-CPU build</strong> — <span class="bench-rep-speedup">3.47× faster</span>
+                  <span class="bench-sub"><code>817 ms</code> vs <code>2.83 s</code> · 220 vs 1,117 MiB peak RSS</span>
+                </td>
               </tr>
               <tr>
-                <td><strong>PBF → GOL build (Bremen)</strong></td>
-                <td class="num"><code>831 ms</code></td>
-                <td class="num"><code>2.82 s</code></td>
-                <td>4 CPUs · 224 vs 1,120 MiB RSS · GOL Tool 2.0.0</td>
+                <td>
+                  <strong><a href="https://bench.regol.org/?suite=scale#latest">Scale</a></strong>
+                  <span class="bench-sub">5-step city viewport sessions from 1 MiB (Monaco) to 3.6 GiB (UK)</span>
+                </td>
+                <td class="num">
+                  <span class="bench-speedup">1.90× faster</span>
+                  <span class="bench-sub">vs GeoDesk Python 2.3.1</span>
+                </td>
+                <td>
+                  <strong>Bremen (37 MiB GOL)</strong> — <span class="bench-rep-speedup">1.68× faster</span>
+                  <span class="bench-sub"><code>0.58 ms</code> vs <code>0.97 ms</code> Python · <code>62.6 ms</code> GeoDesk Java 2.1.0</span>
+                </td>
               </tr>
               <tr>
-                <td><strong>CLI road count (Leeds, UK)</strong></td>
-                <td class="num"><code>2.94 ms</code></td>
-                <td class="num"><code>5.09 ms</code></td>
-                <td>11,189 ways on 3.63 GiB UK GOL · 2 CPUs · GOL Tool 2.0.0</td>
+                <td>
+                  <strong><a href="https://bench.regol.org/?suite=cli#latest">CLI exports</a></strong>
+                  <span class="bench-sub">Fresh-process counts &amp; CSV/GeoJSON/GeoJSONL exports (Leeds, UK)</span>
+                </td>
+                <td class="num">
+                  <span class="bench-speedup">1.24× faster</span>
+                  <span class="bench-sub">vs GOL Tool 2.0.0</span>
+                </td>
+                <td>
+                  <strong>Leeds roads GeoJSONL</strong> — <span class="bench-rep-speedup">1.28× faster</span>
+                  <span class="bench-sub"><code>14.76 ms</code> vs <code>18.85 ms</code> · 11,189 ways on 3.63 GiB UK GOL</span>
+                </td>
               </tr>
               <tr>
-                <td><strong>CLI GeoJSONL export (Leeds, UK)</strong></td>
-                <td class="num"><code>14.56 ms</code></td>
-                <td class="num"><code>17.68 ms</code></td>
-                <td>11,189 ways on 3.63 GiB UK GOL · 2 CPUs · GOL Tool 2.0.0</td>
+                <td>
+                  <strong><a href="https://bench.regol.org/?suite=applications#latest">UK applications</a></strong>
+                  <span class="bench-sub">Ten multi-step OpenStreetMap application replays (3.63 GiB UK GOL)</span>
+                </td>
+                <td class="num">
+                  <span class="bench-speedup">3.22× faster</span>
+                  <span class="bench-sub">vs GeoDesk Python 2.3.1</span>
+                </td>
+                <td>
+                  <strong>osm-extractor replay</strong> — <span class="bench-rep-speedup">3.11× faster</span>
+                  <span class="bench-sub"><code>5.77 ms</code> vs <code>17.92 ms</code> · range <code>2.14×–5.16×</code> across 10 apps</span>
+                </td>
               </tr>
               <tr>
-                <td><strong>UK application workflows (10 apps)</strong></td>
-                <td class="num"><code>0.45–127 ms</code></td>
-                <td class="num"><code>1.09–649 ms</code></td>
-                <td>1 CPU · 2.1×–5.5× faster than GeoDesk Python 2.3.1</td>
+                <td>
+                  <strong><a href="https://bench.regol.org/?suite=corpus#latest">UK corpus (524)</a></strong>
+                  <span class="bench-sub">434 verified matched cases across identity, tag, and geometry cohorts</span>
+                </td>
+                <td class="num">
+                  <span class="bench-speedup">2.05× faster</span>
+                  <span class="bench-sub">vs GeoDesk Python 2.3.1 (3.40× vs Java)</span>
+                </td>
+                <td>
+                  <strong>All 434 matched cases</strong> — <span class="bench-rep-speedup">1.81× faster</span>
+                  <span class="bench-sub"><code>1.43 s</code> vs <code>2.60 s</code> Python · <code>3.10×</code> vs <code>4.44 s</code> GeoDesk Java 2.1.0</span>
+                </td>
               </tr>
             </tbody>
           </table>
         </div>
 
-        <p class="bench-footnote">
-          Measured on Intel Xeon E3-1245 V2 (4C/8T, 31 GiB RAM, Debian Linux, <code>rustc 1.100.0</code>). Full methodology, datasets, and commit history at <a href="https://bench.regol.org">bench.regol.org</a> · <a href="https://github.com/regol-gis/gol-bench" rel="noopener">gol-bench</a>.
-        </p>
+        <div class="bench-footer-row">
+          <p class="bench-footnote">
+            Geometric-mean speedups measured on Intel Xeon E3-1245 V2 (4C/8T, 31 GiB RAM, Debian Linux, <code>rustc 1.100.0</code>) with every output verified across engines. Harness: <a href="https://github.com/regol-gis/gol-bench" rel="noopener">gol-bench</a>.
+          </p>
+          <a class="btn btn-secondary" href="https://bench.regol.org">Explore interactive benchmarks →</a>
+        </div>
       </div>
     </section>
 
