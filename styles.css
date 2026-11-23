@@ -823,13 +823,6 @@ p:last-child { margin-bottom: 0; }
   .pillars-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-}
-
-@media (max-width: 720px) {
-  .container { padding: 0 18px; }
-
-  .header-inner { min-height: 76px; padding-top: 8px; }
-  .brand-wordmark { height: 50px; }
 
   .nav-toggle { display: inline-flex; }
 
@@ -854,6 +847,13 @@ p:last-child { margin-bottom: 0; }
     padding: 12px 14px;
     font-size: 1rem;
   }
+}
+
+@media (max-width: 720px) {
+  .container { padding: 0 18px; }
+
+  .header-inner { min-height: 76px; padding-top: 8px; }
+  .brand-wordmark { height: 50px; }
 
   .hero { padding: 28px 0 48px; }
   .feature-section,
