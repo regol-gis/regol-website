@@ -49,6 +49,7 @@
         <nav id="site-nav" class="site-nav" aria-label="Primary">
           <a href="#features">Features</a>
           <a href="#cli">CLI</a>
+          <a href="https://live.regol.org/">Regol Live</a>
           <a href="#benchmarks">Benchmarks</a>
           <a href="#quickstart">Quick Start</a>
           <a href="https://docs.rs/regol" rel="noopener">Docs</a>
@@ -484,6 +485,7 @@ regol build region.osm.pbf region.gol
 regol query region.gol <span class="tok-s">'na[amenity=cafe]'</span></code></pre>
               </div>
             </div>
+            <p>Explore the OpenStreetMap planet with GOQL or Overpass QL in <a href="https://live.regol.org/">Regol Live</a>. To open your own GOL, install the server with <code>cargo install --locked regol-live</code> and run <code>regol live region.gol</code>.</p>
             <p class="qs-foot">
               <a href="https://crates.io/crates/regol-cli" rel="noopener">View regol-cli on crates.io →</a>
             </p>
@@ -499,10 +501,10 @@ regol query region.gol <span class="tok-s">'na[amenity=cafe]'</span></code></pre
               </div>
               <div class="code-panel is-active" id="qs-rust-code">
 <pre><code><span class="tok-k">[dependencies]</span>
-regol = <span class="tok-s">"0.2"</span>
+regol = <span class="tok-s">"0.4"</span>
 
 <span class="tok-c"># Optional PBF builder &amp; mmap features:</span>
-<span class="tok-c"># regol = { version = "0.2",</span>
+<span class="tok-c"># regol = { version = "0.4",</span>
 <span class="tok-c">#   features = ["mmap", "build"] }</span></code></pre>
               </div>
             </div>
